@@ -50,6 +50,7 @@ func ListLV(ctx context.Context, listspec string) ([]*parser.LV, error) {
 	for i, line := range outLines {
 		line = strings.TrimSpace(line)
 		if strings.Contains(line, "WARNING") {
+			fmt.Errorf("WARNING found: %s", line)
 			continue
 		}
 		lv, err := parser.ParseLV(line)
