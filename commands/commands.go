@@ -46,8 +46,15 @@ func ListLV(ctx context.Context, listspec string) ([]*parser.LV, error) {
 	}
 	outStr := strings.TrimSpace(string(out))
 	outLines := strings.Split(outStr, "\n")
-	lvs := make([]*parser.LV, len(outLines))
-	for i, line := range outLines {
+	var lvLines []string
+	for _, line := range outLines {
+		line = strings.TrimSpace(line)
+		if !strings.Contains(line, "WARNING") {
+			lvLines = append(lvLines, line)
+		}
+	}
+	lvs := make([]*parser.LV, len(lvLines))
+	for i, line := range lvLines {
 		line = strings.TrimSpace(line)
 		if !strings.Contains(line, "WARNING") {
 			lv, err := parser.ParseLV(line)
@@ -139,16 +146,20 @@ func ListVG(ctx context.Context) ([]*parser.VG, error) {
 	}
 	outStr := strings.TrimSpace(string(out))
 	outLines := strings.Split(outStr, "\n")
-	vgs := make([]*parser.VG, len(outLines))
-	for i, line := range outLines {
+	var vgLines []string
+	for _, line := range outLines {
 		line = strings.TrimSpace(line)
 		if !strings.Contains(line, "WARNING") {
-			vg, err := parser.ParseVG(line)
-			if err != nil {
-				return nil, err
-			}
-			vgs[i] = vg
+			vgLines = append(vgLines, line)
 		}
+	}
+	vgs := make([]*parser.VG, len(vgLines))
+	for i, line := range vgLines {
+		vg, err := parser.ParseVG(line)
+		if err != nil {
+			return nil, err
+		}
+		vgs[i] = vg
 	}
 	return vgs, nil
 }
