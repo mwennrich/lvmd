@@ -49,15 +49,13 @@ func ListLV(ctx context.Context, listspec string) ([]*parser.LV, error) {
 	lvs := make([]*parser.LV, len(outLines))
 	for i, line := range outLines {
 		line = strings.TrimSpace(line)
-		/*		if strings.Contains(line, "WARNING") {
-					fmt.Errorf("WARNING found: %s", line)
-					continue
-				}
-		*/lv, err := parser.ParseLV(line)
-		if err != nil {
-			return nil, err
+		if !strings.Contains(line, "WARNING") {
+			lv, err := parser.ParseLV(line)
+			if err != nil {
+				return nil, err
+			}
+			lvs[i] = lv
 		}
-		lvs[i] = lv
 	}
 	return lvs, nil
 }
