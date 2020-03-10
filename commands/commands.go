@@ -49,7 +49,7 @@ func ListLV(ctx context.Context, listspec string) ([]*parser.LV, error) {
 	var lvLines []string
 	for _, line := range outLines {
 		line = strings.TrimSpace(line)
-		if strings.Contains(line, "WARNING") {
+		if !strings.Contains(line, "WARNING") {
 			lvLines = append(lvLines, line)
 		}
 	}
@@ -146,7 +146,7 @@ func ListVG(ctx context.Context) ([]*parser.VG, error) {
 	var vgLines []string
 	for _, line := range outLines {
 		line = strings.TrimSpace(line)
-		if strings.Contains(line, "WARNING") {
+		if !strings.Contains(line, "WARNING") {
 			vgLines = append(vgLines, line)
 		}
 	}
