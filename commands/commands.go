@@ -142,14 +142,13 @@ func ListVG(ctx context.Context) ([]*parser.VG, error) {
 	vgs := make([]*parser.VG, len(outLines))
 	for i, line := range outLines {
 		line = strings.TrimSpace(line)
-		if strings.Contains(line, "WARNING") {
-			continue
+		if !strings.Contains(line, "WARNING") {
+			vg, err := parser.ParseVG(line)
+			if err != nil {
+				return nil, err
+			}
+			vgs[i] = vg
 		}
-		vg, err := parser.ParseVG(line)
-		if err != nil {
-			return nil, err
-		}
-		vgs[i] = vg
 	}
 	return vgs, nil
 }
