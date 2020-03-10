@@ -49,6 +49,9 @@ func ListLV(ctx context.Context, listspec string) ([]*parser.LV, error) {
 	lvs := make([]*parser.LV, len(outLines))
 	for i, line := range outLines {
 		line = strings.TrimSpace(line)
+		if strings.Contains(line, "WARNING") {
+			continue
+		}
 		lv, err := parser.ParseLV(line)
 		if err != nil {
 			return nil, err
@@ -140,6 +143,9 @@ func ListVG(ctx context.Context) ([]*parser.VG, error) {
 	vgs := make([]*parser.VG, len(outLines))
 	for i, line := range outLines {
 		line = strings.TrimSpace(line)
+		if strings.Contains(line, "WARNING") {
+			continue
+		}
 		vg, err := parser.ParseVG(line)
 		if err != nil {
 			return nil, err
